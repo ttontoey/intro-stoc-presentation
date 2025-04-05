@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int RESOLUTION = 1e6;
+const int RANDOM_RESOLUTION = 1e6;
 
 int main(){
     cout << "You will have to provide the inverse C.D.F function values, denoted F^-1(x) where F(x) = P(X <= x)." << endl;
@@ -22,7 +22,6 @@ int main(){
         cout << fixed << setprecision(3) << "F^-1(" << x << ") value: ";
         double val;
         cin >> val;
-
         if (val >= prev){
             cumuProbToVal[x] = val;
             prev = val;
@@ -40,8 +39,8 @@ int main(){
 
     srand(time(0));
     for (int i = 0 ; i < n_sample ; i++){
-        double r = (rand() % RESOLUTION);
-        r = r / RESOLUTION;
+        double r = (rand() % RANDOM_RESOLUTION);
+        r = r / RANDOM_RESOLUTION;
         auto it = cumuProbToVal.lower_bound(r);
         samples[i] = it->second;
     }
