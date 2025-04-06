@@ -7,18 +7,10 @@ using namespace std;
 void print_walk_sim(int t, int pos, int bar_l, int bar_r){
     cout << "t=" << t << ": [";
     for (int i=1 ; i <= bar_r ; i++){
-        if (i == bar_l){
-            cout << "X";
-        }
-        else if (i == bar_r){
-            cout << "X";
-        }
-        else if (i == pos){
-            cout << "O";
-        }
-        else {
-            cout << "-";
-        }
+        if (i == bar_l){ cout << "X"; }
+        else if (i == bar_r){ cout << "X"; }
+        else if (i == pos){ cout << "O"; }
+        else { cout << "-";}
     }
     cout << "]";
 }
@@ -45,8 +37,8 @@ int main(){
     int a, bar_l, bar_r;
     cout << "Starting point: ";
     cin >> a;
-    cout << "Left absorption barrier: ";
-    cin >> bar_l;
+    cout << "Left absorption barrier: 0" << endl;
+    bar_l = 0;
     if (bar_l > a){
         cout << "Error: Left absorption barrier must be less than or equal to the starting point.";
         return 0;
@@ -70,30 +62,27 @@ int main(){
         int sim;
         cout << "Simulation(s) to run: ";
         cin >> sim;
-        int bar_l_hit = 0, bar_r_hit = 0;
-        int hitting_time_sum = 0;
+        char printSim;
+        cout << "Print sim results? [Y/N]: ";
+        cin >> printSim;
+        int bar_l_hit = 0, bar_r_hit = 0, hitting_time_sum = 0;
         for (int i = 0 ; i < sim ; i++){
-            rand_walk_sim(S_n, bar_l, bar_r, t, false);
-            if (S_n == bar_l){
+            rand_walk_sim(S_n, bar_l, bar_r, t, printSim == 'Y');
+            if (S_n == bar_l)
                 bar_l_hit++;
-            }
-            if (S_n == bar_r){
+            if (S_n == bar_r)
                 bar_r_hit++;
-            }
             hitting_time_sum += t;
             S_n = a;
             t = 0;
         }
-        double hitting_time = hitting_time_sum;
-        hitting_time /= sim;
-        double bar_l_prob = bar_l_hit;
-        bar_l_prob /= (bar_l_hit + bar_r_hit);
-        double bar_r_prob = bar_r_hit;
-        bar_r_prob /= (bar_l_hit + bar_r_hit);
+        double hitting_time = (hitting_time_sum * 1.0) / sim;
+        double bar_l_prob = (bar_l_hit * 1.0)/(bar_l_hit + bar_r_hit);
+        double bar_r_prob = (bar_r_hit * 1.0)/(bar_l_hit + bar_r_hit);
         cout << endl << "### NUMERICAL RESULT ###" << endl;
-        cout << " - Hitting time: " << hitting_time << endl;
-        cout << " - Prob hitting the left barrier: " << bar_l_prob << endl;
-        cout << " - Prob hitting the right barrier: " << bar_r_prob << endl;
+        cout << " - Expected hitting time: " << hitting_time << endl;
+        cout << " - P(Hitting the left barrier): " << bar_l_prob << endl;
+        cout << " - P(Hitting the right barrier): " << bar_r_prob << endl;
     }
 
 

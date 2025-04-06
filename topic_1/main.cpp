@@ -17,19 +17,16 @@ int main(){
     map<double, double> cumuProbToVal;
     double prev = -10000000;
     for (int i = 1 ; i <= samp_count ; i++){
-        double x = i;
-        x /= samp_count;
+        double x = (i * 1.0)/samp_count;
         cout << fixed << setprecision(3) << "F^-1(" << x << ") value: ";
         double val;
         cin >> val;
-        if (val >= prev){
-            cumuProbToVal[x] = val;
-            prev = val;
-        }
-        else {
+        if (val < prev){
             cout << "Error: F^-1(x) has to be monotonously increasing !";
             return 0;
         }
+        cumuProbToVal[x] = val;
+        prev = val;
     }
 
     int n_sample;
@@ -39,20 +36,18 @@ int main(){
 
     srand(time(0));
     for (int i = 0 ; i < n_sample ; i++){
-        double r = (rand() % RANDOM_RESOLUTION);
-        r = r / RANDOM_RESOLUTION;
+        double r = ((rand() % RANDOM_RESOLUTION) * 1.0)/RANDOM_RESOLUTION;
         auto it = cumuProbToVal.lower_bound(r);
         samples[i] = it->second;
     }
 
-    cout << "#### RESULT ####" << endl;
+    cout << endl << "#### RESULT ####" << endl << "Sample: [";
     double sum = 0;
     for (int i = 0 ; i < samples.size() - 1 ; i++){
         cout << samples[i] << ", ";
         sum += samples[i];
     }
-    cout << samples[samples.size() - 1];
+    cout << samples[samples.size() - 1] << "]" << endl;
     sum += samples[samples.size() - 1];
-    cout << endl;
-    cout << "Mean: " << sum/n_sample;
+    cout << "Sample mean: " << sum / n_sample;
 }
