@@ -20,7 +20,8 @@ void print_walk_sim(int t, int pos, int bar_l, int bar_r){
     cout << "]";
 }
 
-void rand_walk_sim(int &S_n, int &bar_l, int &bar_r, int &t, double &p, bool print){
+void rand_walk_sim(int &S_n, int &bar_l, int &bar_r, int &t, double &p, unsigned int seed, bool print){
+    srand(seed);
     if (print){
         cout << endl << "### RANDOM WALK SIMULATION ###" << endl;
         print_walk_sim(0, S_n, bar_l, bar_r);
@@ -69,7 +70,7 @@ int main(){
     int S_n = a;
     int t = 0;
     if (mode == 1){
-        rand_walk_sim(S_n, bar_l, bar_r, t, p, true);
+        rand_walk_sim(S_n, bar_l, bar_r, t, p, time(0), true);
     }
     else if (mode == 2){
         int sim;
@@ -80,7 +81,7 @@ int main(){
         cin >> printSim;
         int bar_l_hit = 0, bar_r_hit = 0, hitting_time_sum = 0;
         for (int i = 0 ; i < sim ; i++){
-            rand_walk_sim(S_n, bar_l, bar_r, t, p, printSim == 'Y');
+            rand_walk_sim(S_n, bar_l, bar_r, t, p, time(0) + i, printSim == 'Y');
             if (S_n == bar_l)
                 bar_l_hit++;
             if (S_n == bar_r)
